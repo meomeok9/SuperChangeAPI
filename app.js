@@ -17,7 +17,7 @@ const app = express();
 
 app.use(cors(corsOpts));
 app.set('view engine', 'ejs');
-app.set('views', 'Src/views/EJS');
+app.set('views', 'Src/views/ejs');
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
