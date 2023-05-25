@@ -3,6 +3,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+const helmet = require('helmet');
 const mainRoute = require("./Src/Routes/main");
 const mongoose = require("mongoose");
 const PORT = process.env.PORT;
@@ -26,12 +27,14 @@ app.get('/',(req,res,next)=>{
     res.redirect('/add-new-user');
 })
 app.use(mainRoute);
+app.use(helmet());
+
 mongoose.set("strictQuery", false);
 
 mongoose
   .connect(URI) //
   .then((rs) => {
-    app.listen(PORT || 5000, () => {
+   app.listen(PORT || 5000, () => {
       console.log(`listening on ${PORT? PORT :'5000'} and Success to connect to database!`);
     });
   })
