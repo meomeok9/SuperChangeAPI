@@ -22,7 +22,7 @@
 
     <title>Document</title>
   </head>
-  <body class="container">
+  <body class="container-fluid bg-info">
     <div class="navcontainer">
       <div class="left">
         <button
@@ -183,12 +183,17 @@
       </div>
     </div>
 
-    <table class="table table-bordered <%= isLoggedIn? '' : 'hidden' %>">
+    <table class="table table-hover pre-scrollable <%= isLoggedIn? '' : 'hidden' %>">
       <thead>
         <tr>
           <th>Name</th>
           <th>Email</th>
           <th>Address</th>
+          <th>Phone Number</th>
+          <th>Active Date</th>
+          <th>Exprirate Date</th>
+          <th>Role</th>
+
           <th>Action</th>
         </tr>
       </thead>
@@ -198,7 +203,10 @@
           <td><%= user.fullName %></td>
           <td><%= user.email%></td>
           <td><%= user.address%></td>
-
+          <td><%= user.phoneNunber%></td>
+          <td><%= user.activeDate %></td>
+          <td><%= user.expirateDate %></td>
+          <td><%= user.role%></td>
           <td>
             <form action="/delete-user" method="POST">
               <input type="hidden" value="<%= user._id %>" name="userId" />
@@ -249,6 +257,8 @@
     const emailInput = document.getElementById("email");
     const userPopup = document.getElementById("btn-user-popup");
     const logoutPopup = document.getElementById("btn-logout-popup");
+
+    
 
     iconclose.addEventListener("click", (e) => {
       if (wrapper.classList.contains("show")) wrapper.classList.remove("show");

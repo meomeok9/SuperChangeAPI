@@ -18,26 +18,30 @@ module.exports.login = async (req, res, next) => {
         .compare(password, exitsUser.password)
         .then((isMatch) => {
           if (isMatch) {
-            req.session.isLoggedIn = true;
-            req.session.user = exitsUser;
-            req.session.save((err) => {
-              if (err) console.log(err);
-              if (!role || role !== "admin") {
-                return res
-                  .status(200)
-                  .json({ message: "SUCCESS to LOGIN", isLoggedIn: true });
-              } else if (role && role === "admin") {
-                if (!isBackEnd)
-                  return res.status(200).json({
-                    message: "Admin SUCCESS to LOGIN",
-                    isAdmin: true,
-                    isLoggedIn: true,
-                  });
-                else {
+            if (!isBackEnd) {
+              req.session.isLoggedIn = true;
+              req.session.user = exitsUser;
+              req.session.save((err) => {
+                if (err) console.log(err);
+                return res.status(200).json({
+                  message: "Admin SUCCESS to LOGIN",
+                  isAdmin: true,
+                  isLoggedIn: true,
+                });
+              });
+            } else {
+              if (exitsUser.role === "admin") {
+                req.session.isLoggedIn = true;
+                req.session.user = exitsUser;
+                req.session.save((err) => {
+                  if (err) console.log(err);
                   return res.status(200).redirect("/add-new-user");
-                }
+                });
+              } else {
+                console.log("#43 here");
+                return res.status(200).redirect("/add-new-user");
               }
-            });
+            }
           } else
             return res
               .status(401)
@@ -51,6 +55,7 @@ module.exports.login = async (req, res, next) => {
     }
   } catch (err) {}
 };
+
 module.exports.getAddNewUser = async (req, res, next) => {
   try {
     if (!req.session.isLoggedIn) {
@@ -61,7 +66,8 @@ module.exports.getAddNewUser = async (req, res, next) => {
         role: null,
       });
     } else {
-      const allUser = await User.find();
+      let allUser = await User.find();
+
       return res.status(200).render("add-new-user", {
         users: allUser,
         userName: req.session.user.fullName,
