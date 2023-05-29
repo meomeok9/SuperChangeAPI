@@ -1,0 +1,198 @@
+/* .form-control {
+    margin: 1rem 0;
+  }
+  
+  .form-control label,
+  .form-control input,
+  .form-control textarea {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
+  
+  .form-control input,
+  .form-control textarea {
+    border: 1px solid #a1a1a1;
+    font: inherit;
+    border-radius: 2px;
+  }
+  
+  .form-control input:focus,
+  .form-control textarea:focus {
+    outline-color: #00695c;
+  }
+  .frm{
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+    display: block;
+  }
+  .arlert{
+    height: 50px;
+    width: 400px;
+    background-color: green;
+  }
+  .header{
+    display: flex;
+  }
+  .header div{
+    width: 20%;
+  } */
+body {
+  min-height: 100vh;
+  /* background: url("Images/wallpaper.jpg") no-repeat;
+  background-size: cover;
+  background-position: center; */
+}
+.btnLogin-popup {
+  border: none;
+  border-radius: 1rem;
+}
+.btnlogin-popup-icon {
+  font-size: 50px;
+  color: chocolate;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+.btnlogin-popup-icon:hover {
+  color: rgb(17, 120, 138);
+  transform: scale(1.1);
+}
+
+/*------------------------ css for add user ------------------------------------*/
+.wrapper {
+  margin: auto;
+  margin-top: 10rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 400px;
+  height: 440px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transform: scale(0);
+  transition: all 0s ease;
+}
+.wrapper .form-box {
+  padding: 40px;
+}
+.form-box h2 {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+}
+.input-box {
+  position: relative;
+  right: 10%;
+  width: 120%;
+  height: 60px;
+  border-bottom: 2px solid #162938;
+  margin-bottom: 1rem;
+}
+
+.input-box label {
+  font-family: Poppins;
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  color: #162938;
+  font-weight: 500;
+  pointer-events: none;
+}
+.input-box input:focus ~ label,
+.input-box input:valid ~ label,
+.input-box input:hover ~ label {
+  top: 0px;
+}
+.input-box input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  font-weight: 500;
+  color: #162938;
+  padding: 0 2rem 0 5px;
+}
+.input-box .icon {
+  position: absolute;
+  right: 8px;
+  font-size: 1.2em;
+  color: #162938;
+  line-height: 57px;
+}
+.remember-forgot {
+  color: #162938;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 15px;
+  display: flex;
+  justify-content: space-between;
+}
+.remember-forgot label input {
+  accent-color: #162938;
+}
+.remember-forgot a {
+  color: #162938;
+  text-decoration: none;
+}
+.remember-forgot a:hover {
+  text-decoration: underline;
+}
+.btn-login {
+  width: 100%;
+  height: 45px;
+  background-color: #162938;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 500;
+  font-family: Montserrat;
+}
+.login-register {
+  font-size: 0.9rem;
+  color: #162938;
+  text-align: center;
+  font-weight: 500;
+  margin: 25px 0 10px;
+}
+.login-register a p {
+  color: #162938;
+  text-decoration: none;
+  font-weight: 600;
+}
+.login-register a p:hover {
+  text-decoration: underline;
+}
+.wrapper .icon-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 35px;
+  height: 35px;
+  background-color: #162938;
+  font-size: 2em;
+  color: #fff;
+  align-items: center;
+  border-bottom-left-radius: 20px;
+  cursor: pointer;
+  z-index: 1;
+}
+.show {
+  transform: scale(1);
+}
+/* -------------------------------------------- end css for add user---------------------------------------------------------- */

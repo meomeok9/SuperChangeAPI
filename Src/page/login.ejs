@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="add.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <!-- add font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <header class="heeader">
+      <div>LOGO</div>
+      <nav class="navigation">
+        <a href="#">Home</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+        <a href="#">About</a>
+        <button class="btnLogin-popup" id="btnLogin-popup" type="button">
+          Login
+        </button>
+      </nav>
+    </header>
+    <div class="wrapper" id="wrapper">
+      <span class="icon-close" id="icon-close"
+        ><ion-icon name="close-outline"></ion-icon
+      ></span>
+      <div class="form-box login">
+        <h2>Login</h2>
+        <form action="/login" method="POST">
+          <div class="input-box">
+            <span class="icon"><ion-icon name="mail-outline"></ion-icon> </span>
+            <input type="email" id="'email" name="'email" required />
+            <label for="email">Email</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"
+              ><ion-icon name="lock-closed-outline"></ion-icon
+            ></span>
+            <input type="password" name="password" id="password" required />
+            <label for="password">Password</label>
+          </div>
+          <div class="remember-forgot">
+            <label for="remember"
+              ><input type="checkbox" id="remember" />Remember me</label
+            >
+            <a href="#">Forgot password</a>
+          </div>
+          <button type="submit" class="btn-login" id="btn-login">Login</button>
+          <div class="login-register">
+            <a href="#"><p>Register</p></a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <!-- add sript to run ionicons -->
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
+
+  <script>
+    const loginpopup = document.getElementById("btnLogin-popup");
+    const wrapper = document.getElementById("wrapper");
+    const iconclose = document.getElementById("icon-close");
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+
+    // const remember = document.getElementById('remember'); //save to locastorege
+    const submitlogin = document.getElementById("btn-login");
+
+    submitlogin.addEventListener("click", (e) => {
+      if (email.value.trim() === "" || password.value.trim() === "")
+        return window.alert("Invalid email or password");
+    });
+    iconclose.addEventListener("click", (e) => {
+      if (wrapper.classList.contains("show")) wrapper.classList.remove("show");
+    });
+    loginpopup.addEventListener("click", (e) => {
+      wrapper.classList.add("show");
+    });
+  </script>
+</html>
