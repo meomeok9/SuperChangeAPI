@@ -210,6 +210,7 @@
           <td>
             <form action="/delete-user" method="POST">
               <input type="hidden" value="<%= user._id %>" name="userId" />
+              <input type="hidden" value="true" name="isBackEnd" />
               <div class="btn-group">
                 <a href="/edit-user/<%= user._id %>" class="btn btn-info btn-sm"
                   >Edit</a
