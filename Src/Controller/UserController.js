@@ -2,76 +2,146 @@ const User = require("../Model/User");
 const bcrypt = require("bcryptjs");
 
 module.exports.login = async (req, res, next) => {
-  const { email, password, role } = req.body;
-  //   console.log("#1 request body : ", req.body);
+  const { email, password, role, isBackEndLogin } = req.body;
 
-  //   console.log(`${email} --- ${password}`);
-  //const { email, password } = req.body;
-
+  const isBackEnd = isBackEndLogin === "true";
   try {
     const exitsUser = await User.findOne({ email });
-    if (!exitsUser)
-      return res
-        .status(401)
-        .json({ message: "USER NOT FOUND", isLoggIn: false });
-    else {
+    if (!exitsUser) {
+      if (!isBackEnd)
+        return res
+          .status(401)
+          .json({ message: "USER NOT FOUND", isLoggedIn: false });
+      else return res.status(400).redirect("/add-new-user");
+    } else {
       bcrypt
         .compare(password, exitsUser.password)
         .then((isMatch) => {
           if (isMatch) {
-            return res
-              .status(200)
-              .json({ message: "SUCCESS to LOGIN", isLoggIn: true });
+            req.session.isLoggedIn = true;
+            req.session.user = exitsUser;
+            req.session.save((err) => {
+              if (err) console.log(err);
+              if (!role || role !== "admin") {
+                return res
+                  .status(200)
+                  .json({ message: "SUCCESS to LOGIN", isLoggedIn: true });
+              } else if (role && role === "admin") {
+                if (!isBackEnd)
+                  return res.status(200).json({
+                    message: "Admin SUCCESS to LOGIN",
+                    isAdmin: true,
+                    isLoggedIn: true,
+                  });
+                else {
+                  return res.status(200).redirect("/add-new-user");
+                }
+              }
+            });
           } else
             return res
               .status(401)
-              .json({ message: "PASSWORD NOT CORRECT", isLoggIn: false });
+              .json({ message: "PASSWORD NOT CORRECT", isLoggedIn: false });
         })
         .catch((err) =>
-          res.status(403).json({ message: "Some thing wrong", isLoggIn: false })
+          res
+            .status(403)
+            .json({ message: "Some thing wrong", isLoggedIn: false })
         );
     }
   } catch (err) {}
 };
-module.exports.getRegister = async (req, res, next) => {
+module.exports.getAddNewUser = async (req, res, next) => {
   try {
-    const allUser = await User.find();
-    return res.status(200).render("add-new-user", {
-      users: allUser,
-      alertSucess: false,
-      arlerFail: false,
-    });
+    if (!req.session.isLoggedIn) {
+      return res.status(200).render("add-new-user", {
+        users: [],
+        userName: null,
+        isLoggedIn: false,
+        role: null,
+      });
+    } else {
+      const allUser = await User.find();
+      return res.status(200).render("add-new-user", {
+        users: allUser,
+        userName: req.session.user.fullName,
+        isLoggedIn: true,
+        role: req.session.user.role,
+      });
+    }
   } catch (err) {}
 };
 
 module.exports.postRegister = async (req, res, next) => {
   const fullName = req.body.fullName;
-  const email = req.body.email;
-  const password = req.body.password;
-  const confirmPw = req.body.confirmPw;
+  const email = req.body.email2;
+  const password = req.body.password2;
+  const confirmPw = req.body.cfPassword;
   const address = req.body.address;
-  const user = { fullName, email, password, address };
+  const phoneNunber = req.body.phoneNunber;
+  const activeDate = req.body.activeDate;
+  const expirateDate = req.body.expirateDate;
+  const role = "user";
+  const user = {
+    fullName,
+    email,
+    password,
+    address,
+    phoneNunber,
+    activeDate,
+    expirateDate,
+    role,
+  };
+  const isBackEnd = req.body.isBackEnd === "true";
+  if (password !== confirmPw) return res.status(400).redirect("/add-new-user");
   try {
     user.password = await bcrypt.hash(user.password, 12);
-
     const existUser = await User.find({ email: user.email });
     if (existUser.length !== 0) {
-      return res.status(400).redirect("/add-new-user");
+      const allUser = await User.find();
+      if (isBackEnd) return res.status(400).redirect("/add-new-user");
+      else
+        res
+          .status(400)
+          .json({ message: "Fail to add new one", results: allUser });
     } else {
       const newUser = new User(user);
       await newUser.save();
-      return res.status(200).redirect("/add-new-user");
+      const allUser = await User.find();
+      if (isBackEnd) return res.status(200).redirect("/add-new-user");
+      else
+        return res
+          .status(200)
+          .json({ message: "Success to add new User", results: allUser });
     }
   } catch (err) {}
 };
-module.exports.postDeleteUser = (req, res, next) => {
-  const userId = req.body.userId;
 
+module.exports.postDeleteUser = async (req, res, next) => {
+  const userId = req.body.userId;
+  const isBackEnd = req.body.isBackEnd === "true";
+  let allUser;
+  if (isBackEnd) allUser = await User.find();
   User.findByIdAndRemove(userId)
     .then(() => {
-      return res.status(200).redirect("/add-new-user");
+      return isBackEnd
+        ? res.status(200).redirect("/add-new-user")
+        : res.status(200).json({ message: "Deleted !", results: allUser });
     })
     .catch((err) => {
-      return res.status(200).redirect("/add-new-user");
+      return isBackEnd
+        ? res.status(200).redirect("/add-new-user")
+        : res
+            .status(200)
+            .json({ message: "Fail to delete!", results: allUser });
     });
+};
+
+module.exports.logout = (req, res) => {
+  req.session.destroy();
+  const isBackEnd = req.body.isBackEndLogout === "true";
+  if (!isBackEnd) return res.status(200).json({ message: "SUCCESS" });
+  else {
+    return res.status(200).redirect("/");
+  }
 };

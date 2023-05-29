@@ -47,17 +47,23 @@ body {
 .btnLogin-popup {
   border: none;
   border-radius: 1rem;
+  background-color: #fff;
+  transform: scale(0);
 }
 .btnlogin-popup-icon {
   font-size: 50px;
   color: chocolate;
-  background: white;
-  border-radius: 50%;
   transition: all 0.3s ease-in-out;
 }
 .btnlogin-popup-icon:hover {
   color: rgb(17, 120, 138);
   transform: scale(1.1);
+}
+.navcontainer {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5rem 0 1rem;
 }
 
 /*------------------------ css for add user ------------------------------------*/
@@ -68,8 +74,6 @@ body {
   left: 0;
   right: 0;
   margin: auto;
-  width: 400px;
-  height: 440px;
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.5);
   border-radius: 20px;
@@ -80,14 +84,14 @@ body {
   align-items: center;
   overflow: hidden;
   transform: scale(0);
-  transition: all 0s ease;
+  transition: all 0.2s ease;
 }
 .wrapper .form-box {
   padding: 40px;
 }
 .form-box h2 {
   font-size: 2em;
-  color: #fff;
+  color: #162938;
   text-align: center;
 }
 .input-box {
@@ -98,7 +102,9 @@ body {
   border-bottom: 2px solid #162938;
   margin-bottom: 1rem;
 }
-
+.left {
+  display: flex;
+}
 .input-box label {
   font-family: Poppins;
   position: absolute;
@@ -109,11 +115,12 @@ body {
   color: #162938;
   font-weight: 500;
   pointer-events: none;
+  transition: all 0.25s ease-in-out;
 }
 .input-box input:focus ~ label,
 .input-box input:valid ~ label,
 .input-box input:hover ~ label {
-  top: 0px;
+  top: 1px;
 }
 .input-box input {
   width: 100%;
@@ -194,5 +201,13 @@ body {
 }
 .show {
   transform: scale(1);
+}
+.login-size {
+  width: 400px;
+  height: 440px;
+}
+.add-user-size {
+  width: 400px;
+  height: 700px;
 }
 /* -------------------------------------------- end css for add user---------------------------------------------------------- */

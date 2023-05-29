@@ -7,6 +7,7 @@ const path = require("path");
 const mainRoute = require("./Src/Routes/main");
 const mongoose = require("mongoose");
 const session = require("express-session");
+const csurf = require("csurf");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const PORT = process.env.PORT;
 const URI = process.env.MONGODB_URI;
@@ -20,12 +21,12 @@ const corsOpts = {
 const app = express();
 
 app.use(cors(corsOpts));
+const csurfProtection = csurf();
 const store = new MongoDBStore({
   uri: URI,
   collection: "changerSession",
-  expires: 24 * 60 * 60 * 1000,
+  expires: 24 * 60 * 60 * 1000 * 7,
 });
-
 app.set("view engine", "ejs");
 app.set("views", "Src/page");
 app.use(express.json());
@@ -39,10 +40,10 @@ app.use(
     saveUninitialized: false,
     store: store,
     cookie: {
-      sameSite: "none",
-      secure: true,
-      maxAge: 1000 * 60 * 60 * 24,
-      //httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
     },
   })
 );
@@ -51,7 +52,14 @@ app.get("/", (req, res, next) => {
   res.redirect("/add-new-user");
 });
 app.use(mainRoute);
+app.use(csurfProtection);
 app.use(helmet());
+
+// app.use(function (req, res, next) {
+//   res.locals.user = req.session.user;
+//   res.locals.isLoggedIn = req.session.isLoggedIn;
+//   next();
+// });
 mongoose.set("strictQuery", false);
 
 mongoose

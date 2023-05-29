@@ -1,131 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
+      crossorigin="anonymous"
+    />
 
-<!-- Optional theme -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-    
+    <!-- Optional theme -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap-theme.min.css"
+      integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ"
+      crossorigin="anonymous"
+    />
+
     <title>Document</title>
-</head>
-<body class="container">
-    <button class="btnLogin-popup" id="btnLogin-popup" type="button"><ion-icon class="btnlogin-popup-icon" name="add-circle-outline"></ion-icon></button> 
-    <form action="/add-new-user" method="POST" novalidate>
-        <div class="input-group row" >
-            <div class="form-floating col-lg-2">
-                <input type="text" name="fullName" id="fullName" value="" class="form-control" placeholder="Enter name" required>
-               
-            </div>
-            <div class="form-floating col-lg-2">
-                <input type="text" name="email" id="email" value=""  class="form-control" placeholder="Email" required>
-                
-            </div>
-            <div class="form-floating col-lg-2">
-                <input type="password" name="password" id="password" value="" class="form-control" placeholder="Password" required>
-                
-            </div>
-            <div class="form-floating col-lg-2">
-                <input type="password" name="confirm-pw" id="confirm-pw" value="" class="form-control" placeholder="confirm password" required>
-                
-            </div>
-            <div class="form-floating col-lg-2">
-                <input name="address" id="address" type="text" class="form-control" placeholder="Address" required></input>
-               
-            </div>
-            <div class="form-floating col-lg-2">
-                <button class="btn btn-primary right" type="submit">Add new User</button>
-            </div>
-        </div>
-
-    </form>
-    <div class="wrapper" id="wrapper">
-        <span class="icon-close" id="icon-close"><ion-icon name="close-outline"></ion-icon></span>
-        <div class="form-box login">
-            <h2>Login</h2>
-            <form action="/login" method="POST">
-                <div class="input-box">
-                    <span class="icon" ><ion-icon name="mail-outline"></ion-icon>
-                    </span>
-                    <input type="email" id="'email" name="'email"  required>
-                    <label for="email">Email</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon" ><ion-icon name="lock-closed-outline"></ion-icon></span>
-                    <input type="password" name="password" id="password" required>
-                    <label for="password">Password</label>
-                </div>
-                <div class="remember-forgot">
-                    <label for="remember"><input type="checkbox" id="remember">Remember me</label>
-                    <a href="#">Forgot password</a>
-                </div>
-                <button type="submit" class="btn-login" id="btn-login" onclick="{return rememberMe}" >Login</button>
-                <div class="login-register">
-                    <a href="#"><p>Register</p></a>
-                </div>
-            </form>
-        </div>
+  </head>
+  <body class="container">
+    <div class="navcontainer">
+      <div class="left">
+        <button
+          class="btnLogin-popup <%= isLoggedIn? '' : 'show' %>"
+          id="btnLogin-popup"
+          type="button"
+        >
+          <ion-icon
+            class="btnlogin-popup-icon"
+            name="log-in-outline"
+          ></ion-icon>
+        </button>
+        <form action="/logout" method="POST">
+          <input type="hidden" name="isBackEndLogout" value="true" />
+          <button
+            class="btnLogin-popup <%= isLoggedIn? 'show' : '' %>"
+            id="btn-logout-popup"
+            type="submit"
+          >
+            <ion-icon
+              class="btnlogin-popup-icon"
+              name="log-out-outline"
+            ></ion-icon>
+          </button>
+        </form>
+      </div>
+      <div class="right">
+        <button
+          class="btnLogin-popup <%= isLoggedIn? 'show' : '' %>"
+          id="btn-user-popup"
+          type="button"
+        >
+          <ion-icon
+            class="btnlogin-popup-icon"
+            name="person-add-outline"
+          ></ion-icon>
+        </button>
+      </div>
     </div>
-  
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Address</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (users && users.length > 0) { %>
-                <% for (let user of users) { %>
-                    <tr >
-                        <td>
-                            <%= user.fullName %>
-                        </td>
-                        <td  >
-                            <%= user.email%>
-                        </td>
-                        <td>
-                            <%= user.address%>
-                        </td>
-                        
-                        <td >
-                            <form action="/delete-user" method="POST">
-                                <input type="hidden" value="<%= user._id %>" name="userId">
-                                <div class="btn-group">
-                                    <a href="/edit-user/<%= user._id %>" class="btn btn-info btn-sm">Edit</a> 
-                                    <button class="btn btn-danger btn-sm" type="submit"  onclick="{return window.confirm('Delete ?')}">Delete</button>
-                                </div>
-                            </form>
+    <!-- ------------------------------------------------------------------------ -->
+    <!-- form login  -->
+    <div class="wrapper login-size <%= isLoggedIn? '' : 'show' %>"" id="wrapper">
+      <span class="icon-close" id="icon-close"
+        ><ion-icon name="close-outline"></ion-icon
+      ></span>
+      <div class="form-box login">
+        <h2>Login</h2>
+        <form action="/login" method="POST" id="login-frm">
+          <input type="hidden" name="isBackEndLogin" value="true" />
+          <input type="hidden" name="role" value="admin" />
+          <div class="input-box">
+            <span class="icon"><ion-icon name="mail-outline"></ion-icon> </span>
+            <input type="email" id="'email" name="email" required />
+            <label for="email">Email</label>
+          </div>
+          <div class="input-box">
+            <span class="icon"
+              ><ion-icon name="lock-closed-outline"></ion-icon
+            ></span>
+            <input type="password" name="password" id="password" required />
+            <label for="password">Password</label>
+          </div>
+          <div class="remember-forgot">
+            <label for="remember"
+              ><input type="checkbox" id="remember" />Remember me</label
+            >
+            <a href="#">Forgot password</a>
+          </div>
+          <button type="submit" class="btn-login" id="btn-login">Login</button>
+          <div class="login-register">
+            <a href="#"><p>Register</p></a>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- ---------------------------------------------------- -->
+    <!-- create  user  -->
+    <div class="wrapper add-user-size" id="wrapper2">
+      <span class="icon-close" id="icon-close2"
+        ><ion-icon name="close-outline"></ion-icon
+      ></span>
+      <div class="form-box login">
+        <form action="/add-new-user" method="POST" id="adduser-frm">
+          <!-- username -->
+          <div class="input-box">
+            <span class="icon"
+              ><ion-icon name="id-card-outline"></ion-icon>
+            </span>
+            <input type="text" id="fullName" name="fullName" required />
+            <label for="fullName">Full Name</label>
+          </div>
+          <!-- email -->
+          <div class="input-box">
+            <span class="icon"><ion-icon name="mail-outline"></ion-icon> </span>
+            <input type="email" id="email2" name="email2" required />
+            <label for="email">Email</label>
+          </div>
+          <!-- password -->
+          <div class="input-box">
+            <span class="icon"
+              ><ion-icon name="lock-closed-outline"></ion-icon
+            ></span>
+            <input type="password" name="password2" id="password2" required />
+            <label for="password2">Password</label>
+          </div>
+          <!-- confirm pw -->
+          <div class="input-box">
+            <span class="icon"
+              ><ion-icon name="lock-closed-outline"></ion-icon
+            ></span>
+            <input
+              type="password"
+              name="cfPassword"
+              id="cf-password"
+              required
+            />
+            <label for="cf-password">Confirm Password</label>
+          </div>
+          <!-- phone -->
+          <div class="input-box">
+            <span class="icon"><ion-icon name="call-outline"></ion-icon> </span>
+            <input type="text" id="phoneNunber" name="phoneNunber" required />
+            <label for="phoneNunber">Phone Nunber</label>
+          </div>
+          <!-- address -->
+          <div class="input-box">
+            <span class="icon"
+              ><ion-icon name="id-card-outline"></ion-icon>
+            </span>
+            <input type="text" id="address" name="address" required />
+            <label for="address">Address</label>
+          </div>
+          <!-- active date -->
+          <div class="input-box">
+            <input
+              class="text-center"
+              type="date"
+              id="activeDate"
+              name="activeDate"
+              required
+            />
+            <label for="activeDate">Active Date</label>
+          </div>
+          <!-- expri date -->
+          <div class="input-box">
+            <input
+              class="text-center"
+              type="date"
+              id="expirateDate"
+              name="expirateDate"
+              required
+            />
+            <label for="expirateDate">Expirate Date</label>
+          </div>
+          <input type="hidden" name="isBackEnd" value="true" />
+          <button type="submit" class="btn-login" id="btn-add-user">Add</button>
+        </form>
+      </div>
+    </div>
 
-                        </td>
-                    </tr>
-                    <% } %>
-                <% } else { %>
-                    <h1>No User Found!</h1>
-                    <% } %>
-        </tbody>
+    <table class="table table-bordered <%= isLoggedIn? '' : 'hidden' %>">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (users && users.length > 0) { %> <% for (let user of users) { %>
+        <tr>
+          <td><%= user.fullName %></td>
+          <td><%= user.email%></td>
+          <td><%= user.address%></td>
+
+          <td>
+            <form action="/delete-user" method="POST">
+              <input type="hidden" value="<%= user._id %>" name="userId" />
+              <div class="btn-group">
+                <a href="/edit-user/<%= user._id %>" class="btn btn-info btn-sm"
+                  >Edit</a
+                >
+                <button
+                  class="btn btn-danger btn-sm"
+                  type="submit"
+                  onclick="{return window.confirm('Delete ?')}"
+                >
+                  Delete
+                </button>
+              </div>
+            </form>
+          </td>
+        </tr>
+        <% } %> <% } else { %>
+        <h1>No data !</h1>
+        <% } %>
+      </tbody>
     </table>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script> 
- <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  </body>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
+    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    type="module"
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+  ></script>
+  <script
+    nomodule
+    src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+  ></script>
 
-<script>
-    const loginpopup = document.getElementById('btnLogin-popup');
-    const  wrapper = document.getElementById('wrapper');
-    const iconclose = document.getElementById('icon-close');
-    const submitlogin =  document.getElementById('btn-login');
-    const rmCheck = document.getElementById('remember'); 
-    const user = JSON.stringify(localStorage.getItem('remember-user'));
-    const emailInput = document.getElementById('email');
+  <script>
+    const loginpopup = document.getElementById("btnLogin-popup");
+    const wrapper = document.getElementById("wrapper");
+    const wrapper2 = document.getElementById("wrapper2");
+    const iconclose = document.getElementById("icon-close");
+    const iconclose2 = document.getElementById("icon-close2");
+    const submitlogin = document.getElementById("btn-login");
+    const rmCheck = document.getElementById("remember");
+    const user = JSON.stringify(localStorage.getItem("remember-user"));
+    const emailInput = document.getElementById("email");
+    const userPopup = document.getElementById("btn-user-popup");
+    const logoutPopup = document.getElementById("btn-logout-popup");
 
-    
-    iconclose.addEventListener('click',(e)=>{if(wrapper.classList.contains('show')) wrapper.classList.remove('show')})
-    loginpopup.addEventListener('click',(e)=>{wrapper.classList.add('show')})
-    </script>
+    iconclose.addEventListener("click", (e) => {
+      if (wrapper.classList.contains("show")) wrapper.classList.remove("show");
+    });
+    iconclose2.addEventListener("click", (e) => {
+      if (wrapper2.classList.contains("show"))
+        wrapper2.classList.remove("show");
+    });
+    userPopup.addEventListener("click", (e) => {
+      if (wrapper.classList.contains("show")) wrapper.classList.remove("show");
+      wrapper2.classList.add("show");
+    });
+    loginpopup.addEventListener("click", (e) => {
+      if (wrapper2.classList.contains("show"))
+        wrapper2.classList.remove("show");
+      wrapper.classList.add("show");
+    });
+    logoutPopup.addEventListener("click", () => {});
+  </script>
 </html>
