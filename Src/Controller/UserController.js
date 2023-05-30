@@ -10,7 +10,7 @@ module.exports.login = async (req, res, next) => {
       if (!isBackEnd)
         return res
           .status(401)
-          .json({ message: "USER NOT FOUND", isLoggedIn: false });
+          .json({ message: "USER NOT FOUND", isLoggIn: false });
       else return res.status(400).redirect("/add-new-user");
     } else {
       bcrypt
@@ -18,19 +18,19 @@ module.exports.login = async (req, res, next) => {
         .then((isMatch) => {
           if (isMatch) {
             if (!isBackEnd) {
-              req.session.isLoggedIn = true;
+              req.session.isLoggIn = true;
               req.session.user = exitsUser;
               req.session.save((err) => {
                 if (err) console.log(err);
                 return res.status(200).json({
                   message: "Admin SUCCESS to LOGIN",
                   isAdmin: true,
-                  isLoggedIn: true,
+                  isLoggIn: true,
                 });
               });
             } else {
               if (exitsUser.role === "admin") {
-                req.session.isLoggedIn = true;
+                req.session.isLoggIn = true;
                 req.session.user = exitsUser;
                 req.session.save((err) => {
                   if (err) console.log(err);
@@ -44,12 +44,12 @@ module.exports.login = async (req, res, next) => {
           } else
             return res
               .status(401)
-              .json({ message: "PASSWORD NOT CORRECT", isLoggedIn: false });
+              .json({ message: "PASSWORD NOT CORRECT", isLoggIn: false });
         })
         .catch((err) =>
           res
             .status(403)
-            .json({ message: "Some thing wrong", isLoggedIn: false })
+            .json({ message: "Some thing wrong", isLoggIn: false })
         );
     }
   } catch (err) {}
@@ -57,11 +57,11 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.getAddNewUser = async (req, res, next) => {
   try {
-    if (!req.session.isLoggedIn) {
+    if (!req.session.isLoggIn) {
       return res.status(200).render("add-new-user", {
         users: [],
         userName: null,
-        isLoggedIn: false,
+        isLoggIn: false,
         role: null,
       });
     } else {
@@ -70,7 +70,7 @@ module.exports.getAddNewUser = async (req, res, next) => {
       return res.status(200).render("add-new-user", {
         users: allUser,
         userName: req.session.user.fullName,
-        isLoggedIn: true,
+        isLoggIn: true,
         role: req.session.user.role,
       });
     }
