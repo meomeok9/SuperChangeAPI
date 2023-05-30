@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 
 module.exports.login = async (req, res, next) => {
   const { email, password, role, isBackEndLogin } = req.body;
-
   const isBackEnd = isBackEndLogin === "true";
   try {
     const exitsUser = await User.findOne({ email });

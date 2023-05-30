@@ -26,7 +26,7 @@
     <div class="navcontainer">
       <div class="left">
         <button
-          class="btnLogin-popup <%= isLoggedIn? '' : 'show' %>"
+          class="btnLogin-popup <%= isLoggIn? '' : 'show' %>"
           id="btnLogin-popup"
           type="button"
         >
@@ -38,7 +38,7 @@
         <form action="/logout" method="POST">
           <input type="hidden" name="isBackEndLogout" value="true" />
           <button
-            class="btnLogin-popup <%= isLoggedIn? 'show' : '' %>"
+            class="btnLogin-popup <%= isLoggIn? 'show' : '' %>"
             id="btn-logout-popup"
             type="submit"
           >
@@ -51,7 +51,7 @@
       </div>
       <div class="right">
         <button
-          class="btnLogin-popup <%= isLoggedIn? 'show' : '' %>"
+          class="btnLogin-popup <%= isLoggIn? 'show' : '' %>"
           id="btn-user-popup"
           type="button"
         >
@@ -64,7 +64,7 @@
     </div>
     <!-- ------------------------------------------------------------------------ -->
     <!-- form login  -->
-    <div class="wrapper login-size <%= isLoggedIn? '' : 'show' %>"" id="wrapper">
+    <div class="wrapper login-size <%= isLoggIn? '' : 'show' %>"" id="wrapper">
       <span class="icon-close" id="icon-close"
         ><ion-icon name="close-outline"></ion-icon
       ></span>
@@ -183,7 +183,7 @@
       </div>
     </div>
 
-    <table class="table table-hover pre-scrollable <%= isLoggedIn? '' : 'hidden' %>">
+    <table class="table table-hover pre-scrollable <%= isLoggIn? '' : 'hidden' %>">
       <thead>
         <tr>
           <th>Name</th>
